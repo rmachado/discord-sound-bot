@@ -1,0 +1,8 @@
+.git
+.gitignore
+.env
+*.md
+sounds/
+Dockerfile
+docker-compose.yml
+.dockerignore

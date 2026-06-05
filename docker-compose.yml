@@ -1,0 +1,14 @@
+services:
+  discord-sound-bot:
+    build: .
+    container_name: discord-sound-bot
+    network_mode: host
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - SOUNDS_DIR=/app/sounds
+      - COMMAND_PREFIX=!
+    env_file:
+      - .env
+    volumes:
+      - ./sounds:/app/sounds
+    restart: unless-stopped
