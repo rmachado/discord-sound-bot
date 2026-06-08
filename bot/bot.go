@@ -35,6 +35,11 @@ func New(cfg *config.Config) (*Bot, error) {
 	sounds := reg.List()
 	log.Printf("Loaded registry: %d sound(s) registered", len(sounds))
 
+	added := reg.AutoRegister()
+	if added > 0 {
+		log.Printf("Auto-registered %d new sound(s) from disk", added)
+	}
+
 	session, err := discordgo.New("Bot " + cfg.DiscordToken)
 	if err != nil {
 		return nil, fmt.Errorf("discord: %w", err)
