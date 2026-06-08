@@ -32,6 +32,7 @@ func EncodeToDCA(inputPath, outputPath string, opts *EncodeOptions) error {
 		"-stats",
 		"-i", inputPath,
 		"-map", "0:a",
+		"-af", "loudnorm=I=-16:TP=-1.5:LRA=11:linear=true",
 		"-acodec", "libopus",
 		"-f", "ogg",
 		"-ar", "48000",

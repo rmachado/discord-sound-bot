@@ -22,6 +22,17 @@ A Discord bot written in Go that registers sounds from YouTube videos and plays 
 4. The `.dca` file is saved to the configured sounds directory
 5. An entry is added to `registry.json` inside the same directory
 
+### Auto-Registration at Startup
+
+On every startup, the bot scans `sounds/` for audio files not yet in the registry:
+
+- `*.dca` files are registered directly
+- Common audio formats (`mp3`, `wav`, `ogg`, `m4a`, `webm`, `flac`, `opus`, `aac`, `wma`) are converted to `.dca` via ffmpeg, the original file is deleted, and the `.dca` is registered
+
+This means you can simply drop audio files into the `sounds/` directory and restart the bot — they'll be available as `!<name>` without needing `!add`.
+
+Files are skipped if a `.dca` with the same name already exists, if the name is already registered, or if the name starts with `.` (hidden files).
+
 ### Playing a Sound (`!<name>`, `!random`)
 
 1. The bot looks up the caller's current voice channel via Discord's voice states
@@ -36,7 +47,7 @@ A Discord bot written in Go that registers sounds from YouTube videos and plays 
 main.go              → Entry point, config loading, signal handling
 config/config.go     → Env-based configuration
 bot/bot.go           → Discord session, message routing, command handlers
-sound/registry.go    → JSON file registry (mutex-guarded CRUD)
+sound/registry.go    → JSON file registry (mutex-guarded CRUD), auto-registration
 sound/player.go      → Voice channel join, DCA streaming, playback
 sound/encoder.go     → Custom DCA encoder (ffmpeg → Ogg Opus → DCA0)
 youtube/downloader.go → yt-dlp subprocess wrapper
